@@ -34,7 +34,7 @@ Should build on any debian-based system.
 2. From the root of the repo:
 
 ```
-mkdir build && cd build
+cd build
 cmake -S .. -B .
 make clean && make
 ```
