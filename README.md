@@ -31,7 +31,7 @@ Should build on any debian-based system.
 
 1. Make desired changes to CMakeLists.txt (if any).
 
-2. From the root of the repo:
+2. In the src/ folder:
 
 ```
 cd build
