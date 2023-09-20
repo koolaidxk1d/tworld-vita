@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<livearea style="psmobile" format-ver="01.00" content-rev="1">
+
+	<livearea-background>
+		<image>bg.png</image>
+	</livearea-background>
+
+	<gate>
+		<startup-image>startup.png</startup-image>
+	</gate>
+
+ 	<frame id="frame1">
+		<liveitem>
+			<image>logo0.png</image>
+		</liveitem>
+	</frame>
+
+
+	<frame id="frame3">
+		<liveitem> <lang>en</lang>
+			<image valign="" origin="frame" align="left" image-align="left" image-valign="bottom" width="200" height="62" x="-209">logo1.png
+			</image>
+			<target>https://github.com/koolaidxk1d/</target>  
+		</liveitem>
+		<liveitem> <lang>en-gb</lang>
+			<image valign="bottom" origin="frame" align="left" image-align="left" image-valign="bottom" width="200" height="62" x="-209">logo1.png
+			</image>
+			<target>https://github.com/koolaidxk1d/</target>  
+		</liveitem>
+		<liveitem> <lang>ja</lang>
+			<image valign="bottom" origin="frame" align="left" image-align="left" image-valign="bottom" width="200" height="62" x="-209">logo1.png
+			</image>
+			<target>https://github.com/koolaidxk1d/</target>  
+		</liveitem>
+	</frame>
+
+
+</livearea>

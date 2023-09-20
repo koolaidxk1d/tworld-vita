@@ -1,0 +1,59 @@
+#!/bin/bash
+
+#
+# Update the documentation files.
+#
+
+html2txt < ./README.html > ./README
+html2txt < ./BUGS.html > ./BUGS
+html2txt < ./INSTALL.html > ./INSTALL
+html2txt < ./Changelog.html > ./Changelog
+
+(cd docs && ./mkdocs tworld.doc)
+
+#
+# Create a fresh versioned directory.
+#
+
+VER=`sed -e 's/^.*"\(.*\)".*$/\1/' < ver.h`
+mkdir tworld-$VER
+
+#
+# Create the main distribution.
+#
+
+echo Building tworld-$VER.tar.gz
+tar -cf - `cat MANIFEST` | tar -C tworld-$VER -xf -
+rm -f tworld-$VER.tar.gz
+tar -cf tworld-$VER.tar tworld-$VER
+gzip -9 tworld-$VER.tar
+
+#
+# Create the -noimgs distribution.
+#
+
+echo Building tworld-$VER-noimgs.tar.gz
+rm -f tworld-$VER-noimgs.tar.gz
+tar -cf tworld-$VER-noimgs.tar --exclude="tworld-$VER/res/*tiles*.bmp" \
+    tworld-$VER
+gzip -9 tworld-$VER-noimgs.tar
+
+#
+# Create the distribution with CCLPs.
+#
+
+echo Building tworld-$VER-CCLPs.tar.gz
+cp -a CCLPs tworld-$VER/CCLPs
+mv tworld-$VER/CCLPs/data/* tworld-$VER/data/.
+mv tworld-$VER/CCLPs/sets/* tworld-$VER/sets/.
+rmdir tworld-$VER/CCLPs/data tworld-$VER/CCLPs/sets
+rm -f tworld-$VER-CCLPs.tar.gz
+tar -cf tworld-$VER-CCLPs.tar tworld-$VER
+gzip -9 tworld-$VER-CCLPs.tar
+
+#
+# Done.
+#
+
+rm -rf tworld-$VER
+rm README BUGS INSTALL Changelog

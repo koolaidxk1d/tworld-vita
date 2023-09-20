@@ -1,0 +1,103 @@
+#!/bin/bash
+
+#
+# Update the documentation files (just because they appear in
+# MANIFEST).
+#
+
+html2txt < ./README.html > ./README
+html2txt < ./BUGS.html > ./BUGS
+html2txt < ./INSTALL.html > ./INSTALL
+html2txt < ./Changelog.html > ./Changelog
+
+(cd docs && ./mkdocs tworld.doc)
+
+#
+# Copy all the source files to a fresh directory.
+#
+
+cd win32
+if test -d build ; then rm -rf build ; fi
+mkdir build
+cd build
+
+mkdir data docs oshw-sdl res sets
+ln -s oshw-sdl oshw
+for f in `cat ../../MANIFEST` ; do cp -a ../../$f ./$f ; done
+for f in `cat ../BUILDFILES` ; do cp -a ../$f ./$f ; done
+
+#
+# Build the Windows binary.
+#
+
+sh ./cross-configure.sh --with-win32
+sh ./cross-make.sh tworld.exe
+
+#
+# Update the documentation.
+#
+
+html2txt < ../../README.html > README.txt
+html2txt < ../INSTALL.html > INSTALL.txt
+html2txt < ../../BUGS.html > BUGS.txt
+html2txt < ../../Changelog.html > Changelog.txt
+mv COPYING COPYING.txt
+mv -i docs/*.html .
+
+#
+# The list of files to include.
+#
+
+TXTFILES="README.txt INSTALL.txt Changelog.txt BUGS.txt COPYING.txt \
+          tworld.html sets/*.dac res/rc res/*.txt"
+BINFILES="tworld.exe SDL.dll README-SDL.txt res/*.bmp res/*.wav data/*.dat"
+
+#
+# Get the current version ID.
+#
+
+VER=`sed -e 's/^.*"\(.*\)".*$/\1/' < ver.h`
+
+#
+# Create the main distribution.
+#
+
+zip -9    tworld-$VER-win32.zip $BINFILES
+zip -9 -l tworld-$VER-win32.zip $TXTFILES
+cat ../unzipsfx.exe tworld-$VER-win32.zip > tworld-$VER-win32.exe
+zip -A tworld-$VER-win32.exe
+
+#
+# Create the image-less version.
+#
+
+cp tworld-$VER-win32.zip tworld-$VER-noimgs-win32.zip
+zip -d tworld-$VER-noimgs-win32.zip 'res/*tiles*.bmp'
+
+#
+# Create the CCLPs-enabled version.
+#
+
+cp tworld-$VER-win32.zip tworld-$VER-win32-CCLPs.zip
+zip -d tworld-$VER-win32-CCLPs.zip 'data/*' 'sets/*'
+cp -a ../../CCLPs .
+mv CCLPs/data/* data/.
+mv CCLPs/sets/* sets/.
+rmdir CCLPs/data CCLPs/sets
+zip -9    tworld-$VER-win32-CCLPs.zip data/*
+zip -9 -l tworld-$VER-win32-CCLPs.zip sets/*
+zip -9 -r tworld-$VER-win32-CCLPs.zip CCLPs/
+cat ../unzipsfx.exe tworld-$VER-win32-CCLPs.zip > tworld-$VER-win32-CCLPs.exe
+zip -A tworld-$VER-win32-CCLPs.exe
+
+#
+# Copy the zipfiles to the starting directory and clean up.
+#
+
+mv tworld-$VER-win32.zip tworld-$VER-win32.exe ../..
+mv tworld-$VER-noimgs-win32.zip ../..
+mv tworld-$VER-win32-CCLPs.zip tworld-$VER-win32-CCLPs.exe ../..
+cd ..
+rm -rf build
+cd ..
+rm README BUGS INSTALL Changelog

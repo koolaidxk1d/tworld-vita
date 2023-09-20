@@ -1,0 +1,73 @@
+<html>
+<head>
+<title>
+Installing Tile World for Linux
+</title>
+<head>
+<body bgcolor="#FFFFFC" text="#000000">
+<p align="center">
+<center><h1>
+Installing Tile World for Linux
+</h1></center>
+<p>
+Before proceeding, ensure that you have SDL 1.2 installed on your
+machine. (If you don't have SDL, you can get it by visiting
+<a href="http://www.libsdl.org/download-1.2.php">http://www.libsdl.org/download-1.2.php</a>.
+If you download a precompiled version -- i.e., an .rpm or .deb file --
+note that you will need the development runtime, as opposed to the
+binary runtime.)
+<p>
+Installing Tile World involves the usual three-part incantation:
+<p>
+<h3>
+./configure
+</h3>
+<p>
+By default, the program is set up so that it will keep its shared
+files under <tt>/usr/local/share/tworld</tt>. If you would prefer the
+<tt>tworld</tt> directory to be somewhere besides
+<tt>/usr/local/share</tt>, use the <tt>--datarootdir</tt> option to
+change it when you run <tt>./configure</tt>. Alternately, you can use
+the <tt>--with-sharedir=DIR</tt> option to explicitly specify a
+completely different path. (This value can also be changed at runtime,
+either via the <tt>TWORLDDIR</tt> environment variable or via the
+command line.)
+<p>
+<h3>
+make
+</h3>
+<p>
+This will build the <tt>tworld</tt> binary. There shouldn't be any
+serious warnings from the compiler.
+<p>
+<h3>
+make install
+</h3>
+<p>
+Running "make install" as root will do the following:
+<p>
+<ul>
+<li>
+Copy the <tt>tworld</tt> binary to <tt>/usr/local/games</tt>.
+<li>
+Copy the <tt>tworld.6</tt> manpage to <tt>/usr/local/man/man6</tt>.
+<li>
+Create <tt>/usr/local/share/tworld</tt> if it does not exist. (Or
+whatever directory you specified to <tt>./configure</tt>.)
+<li>
+Copy the external resources (i.e., the bitmaps and wave files) to
+<tt>/usr/local/share/tworld/res</tt>.
+<li>
+Create the directories <tt>/usr/local/share/tworld/data</tt> and
+<tt>/usr/local/share/tworld/sets</tt>.
+</ul>
+<p>
+The <tt>sets</tt> directory is where you will store the <tt>.dat</tt>
+files that you want to use. However, if you want to make use of a
+configuration file with a particular data file, then you will need to
+store the data file in the <tt>data</tt> directory, and the
+configuration file goes into the <tt>sets</tt> directory instead. (If
+you're not sure, then you probably just want to store your data files
+in the <tt>sets</tt> directory.)
+</body>
+</html>

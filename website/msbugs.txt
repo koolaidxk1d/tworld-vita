@@ -1,0 +1,176 @@
+ruleset ms
+
+%%%
+
+title   Erasing Monsters
+
+tiles
+F	fireball north
+end
+
+map
+  & E
+F
+end
+
+% Action: Start the level without moving. On the next tick, push left.
+% MS result: Chip replaces the fireball briefly, then is erased again
+% as the fireball moves into (1,0). The fireball is somehow destroyed
+% by the fire tile. If the fire is replaced by an empty tile, the
+% fireball survives. Similar results can be obtained using a glider
+% and water.
+% TW result: The fireball moves into (1,0). Neither it nor Chip is
+% harmed.
+
+%%%
+
+title   You Win I
+
+tiles
+.	red button
+o	ball north
+end
+
+map
+    v]# o
+  . [v@ #
+    E #
+end
+
+creatures
+
+% Action: Move west.
+% MS result: Chip and the cloned block get confused, and Chip gets
+% pushed into the exit, presumably as the cloned block. The force
+% floor and the block are replaced by an extra (south-facing) Chip.
+% TW result: Chip is hit with a cloned block and dies.
+
+%%%
+
+title   You Win II
+
+tiles
+.	red button
+o	ball north
+end
+
+map
+    v]# o
+  . [v@ #
+    E #
+end
+
+% Action: Move west.
+% MS result: Sometimes the same as "You Win I", and sometimes Chip is
+% hit with a cloned block and dies. The only difference between this
+% level and the previous one is that here the ball is alive. The
+% different behaviors presumably depend on the size of the first
+% second. (A full second results in death.)
+% TW result: The same as "You Win I".
+
+%%%
+
+title   Buffering Weirdness
+
+tiles
+G	glider west
+end
+
+map 10 10
+# # # # # # # # # # # #
+# @ > > > > < < < < G #
+# # # # # # E # # # # #
+end
+
+% Action: Move east, and then use the mouse to move south just before
+% Chip is directly above the exit. (In theory, you can make the final
+% move without using the mouse, but the timing is more difficult.)
+% MS result: When timed correctly, Chip makes it into the exit.
+% TW result: Chip always gets hit by the glider.
+
+%%%
+
+title	Mouse Power
+
+map 10 10
+          E
+, , , , , , , ,
+, , , , ,   , ,
+# # # # # ^ # #
+# = = = = []@ #
+# # # # # ^ # #
+        # ^ #
+        #   #
+end
+
+% Action: Use the mouse to click on the bottom force floor square.
+% MS result: Chip pushes the block north when it rebounds back.
+% TW result: Chip is hit by the block.
+% Note: I'm assuming that this move is impossible without using the
+% mouse, but of course I can't be sure.
+
+
+%%%
+
+title	Simultaneous Teleporting
+
+tiles
+.	red button
+*	teleport
+o	beartrap
+x	brown button
+end
+
+map 10 10
+                    v]
+            * []. @ *   E
+            v
+v < < < < < <       x
+> > > > > > > > > > o
+              ,
+end
+
+% Action: Walk east.
+% MS result: The block pushes the red button, cloning a block into the
+% same teleport as Chip. As a result Chip and the block become
+% confused. Chip is set facing north, but is not moved off of the
+% now-vanished teleport. The block moves south as expected, but turns
+% into a copy of the north-facing Chip. The real Chip remains on the
+% slip list, despite having nothing to push against, and will make
+% oofing sounds until he is moved away. The block that looks like Chip
+% will slide across the force floor and land in the beartrap. When
+% Chip presses the brown button, it will pop out of the trap just like
+% a normal block. (If the block were to land in water instead of a
+% beartrap, it would turn the water into dirt.) Chip cannot push the
+% "block" at all, however, and once it is no longer slipping, it will
+% become fixed at that location. If any creature hits it, Chip will die.
+% TW result: Chip does not remain on the slip list after emerging from
+% the teleport.
+% Note 1: The bug is currently presumed to be purely cosmetic, as
+% Chip's slip status does not influence slide delay.
+% Note 2: The above behavior only happens when Chip has never been on
+% the slip list before he teleports. In the case where Chip has a
+% prior slipping direction, the block exits normally, and Chip exits
+% in his prior slipping direction. TW correctly emulates this case.
+
+%%%
+
+title	Do the Twist
+
+tiles
+/	ice wall southeast
+end
+
+map
+/ = = = = = = = = = = =
+= E
+@
+end
+
+% Action: Move north and hold down the key.
+% MS behavior: While sliding on the ice, Chip turns north and oofs
+% against the edge of the map.
+% TW behavior: Keystrokes are ignored while sliding on ice.
+% Note: This bug is purely cosmetic.
+
+%%%

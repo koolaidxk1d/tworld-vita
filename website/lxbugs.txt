@@ -1,0 +1,193 @@
+ruleset lynx
+
+%%%
+
+title   Stuck Teleport I
+
+tiles
+*	teleport
+.	green button
++	toggle wall closed
+F	fireball east
+G	glider east
+end
+
+map
+# # # # # # # # #
+#   F   . #   # #
+#        |      #
+#       , + *   #
+#         + * @ E
+# G             #
+# # # # # # # # $
+end
+
+% Action: Move west.
+% Lynx result: Chip is stuck on alternate teleports. Dies when glider
+% intersects top toggle floor while Chip is on top teleport. Death
+% explosion remains on top teleport.
+% TW result: Chip is stuck on a single teleport. Chip can control
+% which one by whether or not he pushes against the toggle wall, just
+% before it opens. Chip dies when glider intersects toggle floor
+% opposite Chip; death explosion alternates teleports.
+
+%%%
+
+title   Stuck Teleport II
+
+tiles
+*	teleport
+.	green button
++	toggle wall closed
+F	fireball west
+end
+
+map
+# # # # # # # # #
+#               #
+#       , .   F #
+#         [+*   #
+#         [+* @ E
+#               #
+# # # # # # # # $
+end
+
+% Action: Move west.
+% Lynx result: Chip is stuck on alternate teleports. Both blocks are
+% pushed west after green button is pressed.
+% TW result: Chip is stuck on a single teleport. As before, the user
+% can control which one. The block opposite Chip is pushed.
+
+%%%
+
+title   Stuck Teleport III
+
+tiles
+*	teleport
+.	green button
++	toggle wall closed
+F	fireball west
+end
+
+map
+# # # # # # # # #
+#               #
+#       , .   F #
+#       + []*   #
+#       + []* @ E
+#               #
+# # # # # # # # $
+end
+
+% Action: Move west.
+% Lynx result: Chip is stuck on alternate teleports. Both blocks are
+% simultaneously pushed west after green button is pressed.
+% TW result: Chip is stuck on a single teleport. As before, the user
+% can control which one. The block opposite Chip is pushed.
+
+%%%
+
+title   Ghost Block
+
+tiles
+*	teleport
+end
+
+map
+# # # # # # # # #
+#               #
+#     *   [*    #
+#               #
+#       @       E
+#               #
+# # # # # # # # $
+end
+
+% Action: whatever.
+% Lynx result: Block alternates between teleports. If Chip walks to a
+% teleport, block will get pushed every time. If Chip walks north of a
+% teleport, Chip and block collide. With delicacy, it is possible to
+% diagonally push the block off the teleport.
+% TW result: Block slides off of teleport immediately (similar to the
+% behavior of a block starting on an open beartrap).
+
+%%%
+
+title   Mag-Lev
+hint    " "
+
+tiles
+U	magnet
+end
+
+map
+# # # # # # #
+#     # , # #
+#   @ []v   #
+#       ?   E
+#       U   #
+#           #
+# # # # # # $
+end
+
+% Action: Push block onto force floor, then attempt to push it into
+% the water.
+% Lynx result: Chip can push the block against the force floor and
+% into the water by first picking up the magnet.
+% TW result: The block cannot be pushed against the force floor, with
+% or without the force boots.
+
+%%%
+
+title   Pushback
+
+tiles
+.	red button
+G	glider east
+F	fireball west
+end
+
+map
+# # # # # # # # # #
+# 6             @ #
+#                 #
+#                 #
+#       .       ^ #
+#       G , F   ^ #
+#               ^]#
+# # # # E # # # # $
+end
+
+% Action: Move and hold south.
+% Lynx result: Chip is able to hold the cloned block back as long as
+% he keeps pushing down. (If he stops pushing without moving away, the
+% block kills him.)
+% TW result: Chip is immediately killed by the block.
+
+%%%
+
+title	Pass Through
+
+tiles
+*	teleport
+G	glider east
+end
+
+map
+# # # # # # #
+#           #
+#           #
+#   G * *   E
+#       @   #
+#           #
+# # # # # # $
+end
+
+% Action: walk north.
+% Lynx result: Because Chip is standing on the east teleport, the
+% glider is unable to teleport, and so passes through to collide with
+% Chip. (The Lynx then freezes up, and has to be restarted, but TW
+% doesn't need to emulate that part.)
+% TW result: Chip and the glider teleport past each other.
+
+%%%
